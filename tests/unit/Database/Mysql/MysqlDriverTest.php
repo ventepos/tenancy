@@ -22,7 +22,8 @@ class MysqlDriverTest extends DatabaseDriverTestCase
 {
     protected $additionalProviders = [ServiceProvider::class];
 
-    public function afterSetup(){
+    public function afterSetup()
+    {
         $this->events->listen(Configuring::class, function (Configuring $event) {
             $event->useConfig(__DIR__ . '/database.php');
         });
