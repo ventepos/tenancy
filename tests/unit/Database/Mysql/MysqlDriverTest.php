@@ -27,6 +27,6 @@ class MysqlDriverTest extends DatabaseDriverTestCase
         $this->events->listen(Configuring::class, function (Configuring $event) {
             $event->useConfig(__DIR__ . '/database.php');
         });
-        parent::__afterSetUp();
+        parent::afterSetUp();
     }
 }
