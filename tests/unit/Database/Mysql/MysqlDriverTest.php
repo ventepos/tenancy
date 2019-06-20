@@ -15,9 +15,17 @@
 namespace Tenancy\Tests\Database;
 
 use Tenancy\Testing\DatabaseDriverTestCase;
+use Tenancy\Database\Events\Drivers\Configuring;
 use Tenancy\Database\Drivers\Mysql\Providers\ServiceProvider;
 
 class MysqlDriverTest extends DatabaseDriverTestCase
 {
     protected $additionalProviders = [ServiceProvider::class];
+
+    public function afterSetup(){
+        $this->events->listen(Configuring::class, function (Configuring $event) {
+            $event->useConfig(__DIR__ . '/database.php');
+        });
+        parent::__afterSetUp();
+    }
 }
