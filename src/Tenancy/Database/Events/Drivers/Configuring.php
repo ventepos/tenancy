@@ -67,7 +67,8 @@ class Configuring
         return $this;
     }
 
-    public function useArray(array $array, array $override = []){
+    public function useArray(array $array, array $override = [])
+    {
         $this->configuration = array_merge(
             $array,
             $override
