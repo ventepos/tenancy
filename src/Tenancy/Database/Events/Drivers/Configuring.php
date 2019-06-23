@@ -53,13 +53,25 @@ class Configuring
         return $this;
     }
 
-    public function useConfig(string $path)
+    public function useConfig(string $path, array $override = [])
     {
         if (! file_exists($path)) {
             throw new InvalidArgumentException("Cannot set up tenant connection configuration, file $path does not exist.");
         }
 
-        $this->configuration = include $path;
+        $this->configuration = array_merge(
+            include $path,
+            $override
+        );
+
+        return $this;
+    }
+
+    public function useArray(array $array, array $override = []){
+        $this->configuration = array_merge(
+            $array,
+            $override
+        );
 
         return $this;
     }
