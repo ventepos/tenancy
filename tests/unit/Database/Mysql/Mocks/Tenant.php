@@ -22,7 +22,8 @@ use Tenancy\Database\Drivers\Mysql\Concerns\ManagesSystemConnection;
 class Tenant extends \Tenancy\Testing\Mocks\Tenant implements Contract, ManagesSystemConnection
 {
     use AllowsTenantIdentification;
-    public function getManagingSystemConnection(): string{
+    public function getManagingSystemConnection(): string
+    {
         return 'mysql';
     }
 }
