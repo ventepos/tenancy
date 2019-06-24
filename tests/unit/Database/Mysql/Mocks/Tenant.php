@@ -15,12 +15,10 @@
 namespace Tenancy\Tests\Database\Mocks;
 
 use Tenancy\Identification\Contracts\Tenant as Contract;
-use Tenancy\Identification\Concerns\AllowsTenantIdentification;
 use Tenancy\Database\Drivers\Mysql\Concerns\ManagesSystemConnection;
 
 class Tenant extends \Tenancy\Testing\Mocks\Tenant implements Contract, ManagesSystemConnection
 {
-    use AllowsTenantIdentification;
     public function getManagingSystemConnection(): string
     {
         return 'mysql';
