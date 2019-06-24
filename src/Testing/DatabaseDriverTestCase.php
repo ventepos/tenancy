@@ -18,19 +18,23 @@ use PDO;
 use Tenancy\Facades\Tenancy;
 use InvalidArgumentException;
 use Tenancy\Testing\TestCase;
+use Tenancy\Testing\Mocks\Tenant;
 use Tenancy\Tenant\Events\Created;
 use Tenancy\Tenant\Events\Deleted;
 use Tenancy\Tenant\Events\Updated;
 use Illuminate\Database\Connection;
 use Illuminate\Database\DatabaseManager;
+use Tenancy\Identification\Contracts\ResolvesTenants;
 
 abstract class DatabaseDriverTestCase extends TestCase
 {
     protected $db;
     protected $tenant;
+    public $tenantModel = Tenant::class;
 
     protected function afterSetUp()
     {
+        $this->registerModel();
         $this->db = resolve(DatabaseManager::class);
 
         $this->tenant = $this->createMockTenant([
@@ -46,6 +50,13 @@ abstract class DatabaseDriverTestCase extends TestCase
         Tenancy::getTenant();
 
         return $this->db->connection(Tenancy::getTenantConnectionName());
+    }
+
+    protected function registerModel()
+    {
+        /** @var ResolvesTenants $resolver */
+        $resolver = $this->app->make(ResolvesTenants::class);
+        $resolver->addModel($this->tenantModel);
     }
 
     /**

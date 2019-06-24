@@ -14,6 +14,7 @@
 
 namespace Tenancy\Tests\Database;
 
+use Tenancy\Tests\Database\Mocks\Tenant;
 use Tenancy\Testing\DatabaseDriverTestCase;
 use Tenancy\Database\Events\Drivers\Configuring;
 use Tenancy\Database\Drivers\Mysql\Providers\ServiceProvider;
@@ -22,6 +23,7 @@ class MysqlDriverTest extends DatabaseDriverTestCase
 {
     protected $additionalProviders = [ServiceProvider::class];
     protected $additionalMocks = [__DIR__ . '/Mocks/factories/'];
+    public $tenantModel = Tenant::class;
 
     public function afterSetup()
     {
