@@ -21,6 +21,7 @@ use Tenancy\Database\Drivers\Mysql\Providers\ServiceProvider;
 class MysqlDriverTest extends DatabaseDriverTestCase
 {
     protected $additionalProviders = [ServiceProvider::class];
+    protected $additionalMocks = [__DIR__ . '/Mocks/factories/'];
 
     public function afterSetup()
     {
