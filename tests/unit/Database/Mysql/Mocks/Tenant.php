@@ -14,7 +14,6 @@
 
 namespace Tenancy\Tests\Database\Mocks;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Tenancy\Identification\Contracts\Tenant as Contract;
 use Tenancy\Identification\Concerns\AllowsTenantIdentification;
 use Tenancy\Database\Drivers\Mysql\Concerns\ManagesSystemConnection;
