@@ -12,7 +12,7 @@
  * @see https://github.com/tenancy
  */
 
-namespace Tenancy\Tests\Database\Mocks;
+namespace Tenancy\Tests\Database\Mysql\Mocks;
 
 use Tenancy\Identification\Contracts\Tenant as Contract;
 use Tenancy\Database\Drivers\Mysql\Concerns\ManagesSystemConnection;
