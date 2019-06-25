@@ -136,8 +136,9 @@ abstract class DatabaseDriverTestCase extends TestCase
         $this->getTenantConnection()->getPdo();
     }
 
-    public function expect_exception(){
-        if($this->pdo){
+    public function expect_exception()
+    {
+        if ($this->pdo) {
             $this->expectException(PDOException::class);
         } else {
             $this->expectException(InvalidArgumentException::class);
