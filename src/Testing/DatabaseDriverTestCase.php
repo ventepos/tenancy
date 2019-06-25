@@ -37,7 +37,7 @@ abstract class DatabaseDriverTestCase extends TestCase
         $this->registerModel();
         $this->db = resolve(DatabaseManager::class);
 
-        $this->tenant = $this->createMockTenant([
+        $this->tenant = factory($this->tenantModel)->make([
             'id' => 1803,
         ]);
         $this->tenant->unguard();
