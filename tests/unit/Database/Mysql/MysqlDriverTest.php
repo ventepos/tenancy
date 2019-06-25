@@ -12,9 +12,9 @@
  * @see https://github.com/tenancy
  */
 
-namespace Tenancy\Tests\Database;
+namespace Tenancy\Tests\Database\Mysql;
 
-use Tenancy\Tests\Database\Mocks\Tenant;
+use Tenancy\Tests\Database\Mysql\Mocks\Tenant;
 use Tenancy\Testing\DatabaseDriverTestCase;
 use Tenancy\Database\Events\Drivers\Configuring;
 use Tenancy\Database\Drivers\Mysql\Providers\ServiceProvider;

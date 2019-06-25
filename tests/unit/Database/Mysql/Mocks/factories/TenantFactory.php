@@ -13,7 +13,7 @@
  */
 
 use Faker\Generator as Faker;
-use Tenancy\Tests\Database\Mocks\Tenant;
+use Tenancy\Tests\Database\Mysql\Mocks\Tenant;
 
 /*
 |--------------------------------------------------------------------------

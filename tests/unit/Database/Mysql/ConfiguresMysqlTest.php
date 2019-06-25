@@ -12,7 +12,7 @@
  * @see https://github.com/tenancy
  */
 
-namespace Tenancy\Tests\Database;
+namespace Tenancy\Tests\Database\Mysql;
 
 use Tenancy\Database\Drivers\Mysql\Providers\ServiceProvider;
 use Tenancy\Database\Events\Drivers\Configuring;

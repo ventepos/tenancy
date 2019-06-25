@@ -12,7 +12,7 @@
  * @see https://github.com/tenancy
  */
 
-namespace Tenancy\Tests\Database;
+namespace Tenancy\Tests\Database\Sqlite;
 
 use Tenancy\Testing\DatabaseDriverTestCase;
 use Tenancy\Database\Drivers\Sqlite\Providers\ServiceProvider;
