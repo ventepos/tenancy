@@ -15,6 +15,7 @@
 namespace Tenancy\Testing;
 
 use PDO;
+use PDOException;
 use Tenancy\Facades\Tenancy;
 use InvalidArgumentException;
 use Tenancy\Testing\TestCase;
@@ -31,6 +32,7 @@ abstract class DatabaseDriverTestCase extends TestCase
     protected $db;
     protected $tenant;
     public $tenantModel = Tenant::class;
+    public $pdo = true;
 
     protected function afterSetUp()
     {
@@ -85,6 +87,20 @@ abstract class DatabaseDriverTestCase extends TestCase
         );
 
         $this->db->purge(Tenancy::getTenantConnectionName());
+
+        // Not an actual test, but delete the updated tenant for cleaning purposes
+        $this->events->dispatch(new Deleted($this->tenant));
+    }
+
+    /**
+     * @test
+     */
+    public function prevent_same_update()
+    {
+        $this->events->dispatch(new Updated($this->tenant));
+
+        $this->expect_exception();
+        $this->getTenantConnection()->getPdo();
     }
 
     /**
@@ -111,23 +127,20 @@ abstract class DatabaseDriverTestCase extends TestCase
     /**
      * @test
      */
-    public function prevent_same_update()
-    {
-        $this->events->dispatch(new Updated($this->tenant));
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->getTenantConnection()->getPdo();
-    }
-
-    /**
-     * @test
-     */
     public function runs_delete()
     {
         $this->events->dispatch(new Created($this->tenant));
         $this->events->dispatch(new Deleted($this->tenant));
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expect_exception();
         $this->getTenantConnection()->getPdo();
+    }
+
+    public function expect_exception(){
+        if($this->pdo){
+            $this->expectException(PDOException::class);
+        } else {
+            $this->expectException(InvalidArgumentException::class);
+        }
     }
 }

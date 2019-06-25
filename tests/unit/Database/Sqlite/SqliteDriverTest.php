@@ -20,4 +20,5 @@ use Tenancy\Database\Drivers\Sqlite\Providers\ServiceProvider;
 class SqliteDriverTest extends DatabaseDriverTestCase
 {
     protected $additionalProviders = [ServiceProvider::class];
+    public $pdo = false;
 }
