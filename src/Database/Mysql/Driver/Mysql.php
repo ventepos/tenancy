@@ -14,13 +14,15 @@
 
 namespace Tenancy\Database\Drivers\Mysql\Driver;
 
-use Illuminate\Database\ConnectionInterface;
-use Illuminate\Database\QueryException;
+use Tenancy\Facades\Tenancy;
 use Illuminate\Support\Facades\DB;
-use Tenancy\Database\Contracts\ProvidesDatabase;
-use Tenancy\Database\Drivers\Mysql\Concerns\ManagesSystemConnection;
-use Tenancy\Database\Events\Drivers\Configuring;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\ConnectionInterface;
 use Tenancy\Identification\Contracts\Tenant;
+use Tenancy\Database\Contracts\ProvidesDatabase;
+use Tenancy\Database\Events\Drivers\Configuring;
+use Tenancy\Database\Drivers\Mysql\Concerns\ManagesSystemConnection;
 
 class Mysql implements ProvidesDatabase
 {
@@ -52,9 +54,27 @@ class Mysql implements ProvidesDatabase
             return false;
         }
 
-        return $this->process($tenant, [
+        $tempTenant = $tenant;
+        $tempTenant->{$tempTenant->getTenantKeyName()} = $tenant->getOriginal($tenant->getTenantKeyName());
+        Tenancy::setTenant($tempTenant);
+
+        $connection = Tenancy::getTenantConnection();
+        $tables = $connection->select('SHOW TABLES');
+        $dbStatements = [];
+
+        foreach($tables as $table){
+            foreach($table as $key => $value){
+                $dbStatements['table'.$value] = "RENAME TABLE `{$config['oldUsername']}`.{$value} TO `{$config['database']}`.{$value}";
+            }
+        }
+        $dbStatements['delete_db'] = "DROP DATABASE `{$config['oldUsername']}`";
+
+        $statements = array_merge([
+            'database' => "CREATE DATABASE `{$config['database']}`",
             'user' => "RENAME USER `{$config['oldUsername']}`@'{$config['host']}' TO `{$config['username']}`@'{$config['host']}'",
-        ]);
+        ], $dbStatements);
+
+        return $this->process($tenant, $statements);
     }
 
     public function delete(Tenant $tenant): bool
