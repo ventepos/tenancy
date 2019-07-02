@@ -1,8 +1,6 @@
 version: 2
 
 .test: &test
-    docker:
-    - image: "php:{{ .Environment.PHP_VERSION }}"
     working_directory: ~/repo
     steps:
         - checkout
@@ -30,11 +28,15 @@ version: 2
 jobs:
     "php-7.2":
         <<: *test
+        docker:
+            - image: php:7.2
         environment:
             PHP_VERSION: 7.2
 
     "php-7.3":
         <<: *test
+        docker:
+            - image: php:7.3
         environment:
             PHP_VERSION: 7.3
 
