@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +16,7 @@
 
 namespace Tenancy\Tests\Facades;
 
+use InvalidArgumentException;
 use Tenancy\Database\Events\Resolving;
 use Tenancy\Environment;
 use Tenancy\Facades\Tenancy;
@@ -21,7 +24,6 @@ use Tenancy\Identification\Contracts\ResolvesTenants;
 use Tenancy\Identification\Events\Switched;
 use Tenancy\Testing\Mocks\Tenant;
 use Tenancy\Testing\TestCase;
-use InvalidArgumentException;
 use Tenancy\Tests\Database\Mocks\NullDriver;
 
 class TenancyTest extends TestCase
@@ -34,7 +36,7 @@ class TenancyTest extends TestCase
         $this->events->forget(Resolving::class);
 
         $this->events->listen(Resolving::class, function (Resolving $event) {
-            return new NullDriver;
+            return new NullDriver();
         });
 
         /** @var ResolvesTenants $resolver */
@@ -136,16 +138,16 @@ class TenancyTest extends TestCase
      */
     public function switch_tenant_sets_connection()
     {
-        $this->assertNull(config('database.connections.'. Tenancy::getTenantConnectionName()));
+        $this->assertNull(config('database.connections.'.Tenancy::getTenantConnectionName()));
 
         Tenancy::setTenant($this->tenant);
 
         $this->assertEquals(
-            config('database.connections.' . Tenancy::getTenantConnectionName() . '.tenant-key'),
+            config('database.connections.'.Tenancy::getTenantConnectionName().'.tenant-key'),
             $this->tenant->getTenantKey()
         );
         $this->assertEquals(
-            config('database.connections.' . Tenancy::getTenantConnectionName() . '.tenant-identifier'),
+            config('database.connections.'.Tenancy::getTenantConnectionName().'.tenant-identifier'),
             $this->tenant->getTenantIdentifier()
         );
     }

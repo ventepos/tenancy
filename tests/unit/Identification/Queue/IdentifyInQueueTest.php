@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +19,6 @@ namespace Tenancy\Tests\Identification\Drivers\Queue;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Event;
 use Tenancy\Identification\Contracts\ResolvesTenants;
-use Tenancy\Identification\Contracts\Tenant;
 use Tenancy\Identification\Drivers\Queue\Providers\IdentificationProvider;
 use Tenancy\Testing\TestCase;
 
@@ -48,7 +49,7 @@ class IdentifyInQueueTest extends TestCase
             $this->assertEquals($tenant->getTenantKey(), $payload['tenant_key']);
         });
 
-        dispatch(new Mocks\Job);
+        dispatch(new Mocks\Job());
     }
 
     /**

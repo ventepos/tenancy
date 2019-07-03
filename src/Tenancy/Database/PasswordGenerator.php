@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,6 +23,7 @@ class PasswordGenerator implements ProvidesPassword
 {
     /**
      * @param Tenant $tenant
+     *
      * @return string
      */
     public function generate(Tenant $tenant): string

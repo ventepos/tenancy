@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,7 +31,7 @@ class EagerIdentificationTest extends TestCase
 
         $middleware = new EagerIdentification($this->app);
 
-        $middleware->handle(new Request, function () {
+        $middleware->handle(new Request(), function () {
         });
 
         $this->assertTrue($this->environment->isIdentified());

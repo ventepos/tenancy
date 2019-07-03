@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -37,6 +39,7 @@ class ConnectionResolver implements ConnectionResolverInterface
      * Get a database connection instance.
      *
      * @param string $name
+     *
      * @return \Illuminate\Database\ConnectionInterface
      */
     public function connection($name = null)
@@ -58,6 +61,7 @@ class ConnectionResolver implements ConnectionResolverInterface
      * Set the default connection name.
      *
      * @param string $name
+     *
      * @return void
      */
     public function setDefaultConnection($name)

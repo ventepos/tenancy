@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,9 +16,8 @@
 
 namespace Tenancy\Support;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use Tenancy\Identification\Events\Switched;
+use Tenancy\Affects\Contracts\ResolvesAffects;
 
 abstract class AffectsProvider extends ServiceProvider
 {
@@ -30,8 +31,10 @@ abstract class AffectsProvider extends ServiceProvider
 
     public function register()
     {
-        foreach ($this->affects as $affect) {
-            Event::listen(Switched::class, $affect);
-        }
+        $this->app->resolving(ResolvesAffects::class, function (ResolvesAffects $resolver) {
+            foreach ($this->affects as $affect) {
+                $resolver->addAffect($affect);
+            }
+        });
     }
 }

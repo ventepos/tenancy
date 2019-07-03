@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -55,7 +57,7 @@ class Configuring
 
     public function useConfig(string $path, array $override = [])
     {
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             throw new InvalidArgumentException("Cannot set up tenant connection configuration, file $path does not exist.");
         }
 

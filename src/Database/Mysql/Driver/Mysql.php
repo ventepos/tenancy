@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -38,9 +40,9 @@ class Mysql implements ProvidesDatabase
         $config = $this->configure($tenant);
 
         return $this->process($tenant, [
-            'user' => "CREATE USER IF NOT EXISTS `{$config['username']}`@'{$config['host']}' IDENTIFIED BY '{$config['password']}'",
+            'user'     => "CREATE USER IF NOT EXISTS `{$config['username']}`@'{$config['host']}' IDENTIFIED BY '{$config['password']}'",
             'database' => "CREATE DATABASE `{$config['database']}`",
-            'grant' => "GRANT ALL ON `{$config['database']}`.* TO `{$config['username']}`@'{$config['host']}'"
+            'grant'    => "GRANT ALL ON `{$config['database']}`.* TO `{$config['username']}`@'{$config['host']}'",
         ]);
     }
 
@@ -62,8 +64,8 @@ class Mysql implements ProvidesDatabase
         $config = $this->configure($tenant);
 
         return $this->process($tenant, [
-            'user' => "DROP USER `{$config['username']}`@'{$config['host']}'",
-            'database' => "DROP DATABASE IF EXISTS `{$config['database']}`"
+            'user'     => "DROP USER `{$config['username']}`@'{$config['host']}'",
+            'database' => "DROP DATABASE IF EXISTS `{$config['database']}`",
         ]);
     }
 
@@ -88,7 +90,7 @@ class Mysql implements ProvidesDatabase
             try {
                 $success = $this->system($tenant)->statement($statement);
 
-                if (! $success) {
+                if (!$success) {
                     throw new QueryException($statement);
                 }
             } catch (QueryException $e) {

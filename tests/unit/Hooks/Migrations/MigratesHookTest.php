@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,18 +16,18 @@
 
 namespace Tenancy\Tests\Affects\Migrations;
 
-use Tenancy\Facades\Tenancy;
-use Tenancy\Testing\Mocks\Tenant;
-use Tenancy\Testing\TestCase;
 use Illuminate\Support\Facades\DB;
+use Tenancy\Database\Drivers\Sqlite\Provider as DatabaseProvider;
+use Tenancy\Facades\Tenancy;
+use Tenancy\Hooks\Migrations\Provider;
 use Tenancy\Tenant\Events\Created;
 use Tenancy\Tenant\Events\Deleted;
-use Tenancy\Hooks\Migrations\Providers\ServiceProvider;
-use Tenancy\Database\Drivers\Sqlite\Providers\ServiceProvider as DatabaseProvider;
+use Tenancy\Testing\Mocks\Tenant;
+use Tenancy\Testing\TestCase;
 
 class MigratesHookTest extends TestCase
 {
-    protected $additionalProviders = [DatabaseProvider::class, ServiceProvider::class];
+    protected $additionalProviders = [DatabaseProvider::class, Provider::class];
     /**
      * @var Tenant
      */
@@ -35,7 +37,7 @@ class MigratesHookTest extends TestCase
     {
         $this->resolveTenant($this->tenant = $this->mockTenant());
 
-        $this->migrateTenant(__DIR__ . '/database/');
+        $this->migrateTenant(__DIR__.'/database/');
 
         $this->events->dispatch(new Created($this->tenant));
     }

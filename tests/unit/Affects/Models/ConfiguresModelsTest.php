@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,18 +17,18 @@
 namespace Tenancy\Tests\Affects\Models;
 
 use Illuminate\Database\DatabaseManager;
+use InvalidArgumentException;
 use Tenancy\Affects\Models\Database\ConnectionResolver;
 use Tenancy\Affects\Models\Events\ConfigureModels;
-use Tenancy\Affects\Models\Providers\ServiceProvider;
+use Tenancy\Affects\Models\Provider;
 use Tenancy\Facades\Tenancy;
 use Tenancy\Testing\Mocks\Tenant;
 use Tenancy\Testing\TestCase;
-use InvalidArgumentException;
 use Tenancy\Tests\Affects\Models\Mocks\ExtraResolver;
 
 class ConfiguresModelsTest extends TestCase
 {
-    protected $additionalProviders = [ServiceProvider::class];
+    protected $additionalProviders = [Provider::class];
 
     /**
      * @test
@@ -86,7 +88,7 @@ class ConfiguresModelsTest extends TestCase
 
         $this->assertEquals(ConnectionResolver::class, get_class(Tenant::getConnectionResolver()));
 
-        $this->expectExceptionMessage("Database [tenant] not configured.");
+        $this->expectExceptionMessage('Database [tenant] not configured.');
         (new Tenant())->getConnection();
     }
 

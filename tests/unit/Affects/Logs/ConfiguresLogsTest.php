@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,14 +18,14 @@ namespace Tenancy\Tests\Affects\Logs;
 
 use Psr\Log\LoggerInterface;
 use Tenancy\Affects\Logs\Events\ConfigureLogs;
-use Tenancy\Affects\Logs\Providers\ServiceProvider;
+use Tenancy\Affects\Logs\Provider;
 use Tenancy\Facades\Tenancy;
 use Tenancy\Testing\Mocks\Tenant;
 use Tenancy\Testing\TestCase;
 
 class ConfiguresLogsTest extends TestCase
 {
-    protected $additionalProviders = [ServiceProvider::class];
+    protected $additionalProviders = [Provider::class];
 
     /**
      * @var Tenant
@@ -38,7 +40,7 @@ class ConfiguresLogsTest extends TestCase
     protected function afterSetUp()
     {
         $this->tenant = $this->mockTenant();
-        $this->file = '/tmp/log-' . $this->tenant->getTenantKey();
+        $this->file = '/tmp/log-'.$this->tenant->getTenantKey();
         if (file_exists($this->file)) {
             unlink($this->file);
         }
@@ -46,7 +48,7 @@ class ConfiguresLogsTest extends TestCase
         $this->events->listen(ConfigureLogs::class, function (ConfigureLogs $event) {
             $event->config['driver'] = 'single';
             $event->config['level'] = 'debug';
-            $event->config['path'] = '/tmp/log-' . $event->event->tenant->getTenantKey();
+            $event->config['path'] = '/tmp/log-'.$event->event->tenant->getTenantKey();
         });
     }
 

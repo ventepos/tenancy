@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,18 +14,19 @@
  * @see https://github.com/tenancy
  */
 
- namespace Tenancy\Tests\Lifecycle;
+namespace Tenancy\Tests\Lifecycle;
 
+use Illuminate\Queue\CallQueuedClosure;
+use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
-use Tenancy\Lifecycle\Events\Resolved;
+use Tenancy\Lifecycle\Contracts\ResolvesHooks;
+use Tenancy\Lifecycle\HookResolver;
+use Tenancy\Pipeline\Events\Resolved;
 use Tenancy\Tenant\Events\Created;
 use Tenancy\Testing\TestCase;
-use Tenancy\Lifecycle\Contracts\ResolvesHooks;
 use Tenancy\Tests\Lifecycle\Mocks\ConfiguredHook;
-use Tenancy\Tests\Lifecycle\Mocks\InvalidHook;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Queue\CallQueuedClosure;
 use Tenancy\Tests\Lifecycle\Mocks\DefaultHook;
+use Tenancy\Tests\Lifecycle\Mocks\InvalidHook;
 
 class HookResolverTest extends TestCase
 {
@@ -58,11 +61,8 @@ class HookResolverTest extends TestCase
         $resolver->addHook($hookHigh);
 
         $this->events->listen(Resolved::class, function (Resolved $event) use ($hookLow, $hookHigh) {
-            $low = $event->hooks->first();
-            $high = $event->hooks->last();
-
-            $this->assertEquals($hookLow, $low);
-            $this->assertEquals($hookHigh, $high);
+            $this->assertEquals($hookLow, $event->steps->first());
+            $this->assertEquals($hookHigh, $event->steps->last());
         });
 
         $resolver->handle(new Created($this->mockTenant()));
@@ -83,7 +83,7 @@ class HookResolverTest extends TestCase
         );
 
         $resolver->setHooks([
-            ConfiguredHook::class
+            ConfiguredHook::class,
         ]);
 
         $this->assertEquals(
@@ -105,7 +105,7 @@ class HookResolverTest extends TestCase
         $resolver->setHooks([]);
 
         $hook = new ConfiguredHook();
-        $hook->queue = "test";
+        $hook->queue = 'test';
         $resolver->addHook($hook);
 
         $resolver->handle(new Created($this->mockTenant()));
@@ -123,13 +123,12 @@ class HookResolverTest extends TestCase
         /** @var ResolvesHooks $resolver */
         $resolver = resolve(ResolvesHooks::class);
 
-        $hook = new DefaultHook();
-        $resolver->addHook($hook);
+        $resolver->addHook($hook = new DefaultHook());
 
         $this->events->listen(Resolved::class, function (Resolved $event) use ($hook) {
-            $lasthook = $event->hooks->last();
-
-            $this->assertEquals($lasthook, $hook);
+            if ($event->isForPipeline(HookResolver::class)) {
+                $this->assertEquals($hook, $event->steps->last());
+            }
         });
 
         $resolver->handle(new Created($this->mockTenant()));

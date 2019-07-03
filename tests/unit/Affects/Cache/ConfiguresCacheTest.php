@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,14 +18,14 @@ namespace Tenancy\Tests\Affects\Cache;
 
 use Illuminate\Cache\CacheManager;
 use Tenancy\Affects\Cache\Events\ConfigureCache;
-use Tenancy\Affects\Cache\Providers\ServiceProvider;
+use Tenancy\Affects\Cache\Provider;
 use Tenancy\Facades\Tenancy;
 use Tenancy\Testing\Mocks\Tenant;
 use Tenancy\Testing\TestCase;
 
 class ConfiguresCacheTest extends TestCase
 {
-    protected $additionalProviders = [ServiceProvider::class];
+    protected $additionalProviders = [Provider::class];
 
     /**
      * @var Tenant
@@ -42,7 +44,7 @@ class ConfiguresCacheTest extends TestCase
 
         $this->events->listen(ConfigureCache::class, function (ConfigureCache $event) {
             $event->config['driver'] = 'file';
-            $event->config['path'] = '/tmp/' . $event->event->tenant->getTenantKey();
+            $event->config['path'] = '/tmp/'.$event->event->tenant->getTenantKey();
         });
     }
 

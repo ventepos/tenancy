@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,14 +16,14 @@
 
 namespace Tenancy\Tests\Database\Mysql;
 
-use Tenancy\Database\Drivers\Mysql\Providers\ServiceProvider;
+use Tenancy\Database\Drivers\Mysql\Provider;
 use Tenancy\Database\Events\Drivers\Configuring;
 use Tenancy\Facades\Tenancy;
 use Tenancy\Testing\TestCase;
 
 class ConfiguresMysqlTest extends TestCase
 {
-    protected $additionalProviders = [ServiceProvider::class];
+    protected $additionalProviders = [Provider::class];
 
     /**
      * @test
@@ -29,13 +31,13 @@ class ConfiguresMysqlTest extends TestCase
     public function reads_config_file()
     {
         $this->events->listen(Configuring::class, function (Configuring $event) {
-            $event->useConfig(__DIR__ . '/database.php');
+            $event->useConfig(__DIR__.'/database.php');
         });
 
         $this->resolveTenant($tenant = $this->mockTenant());
         Tenancy::getTenant();
 
-        $config = include __DIR__ . '/database.php';
+        $config = include __DIR__.'/database.php';
 
         $config['tenant-key'] = $tenant->getTenantKey();
         $config['tenant-identifier'] = $tenant->getTenantIdentifier();
@@ -58,7 +60,7 @@ class ConfiguresMysqlTest extends TestCase
 
         $this->events->listen(Configuring::class, function (Configuring $event) {
             $event->useConnection('mysql', [
-                'database' => $event->tenant->getTenantKey()
+                'database' => $event->tenant->getTenantKey(),
             ]);
         });
 

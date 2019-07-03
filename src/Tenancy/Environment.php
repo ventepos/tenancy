@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -44,7 +46,7 @@ class Environment
 
         $this->events()->dispatch(new Switched($tenant));
 
-        if (! $this->identified) {
+        if (!$this->identified) {
             $this->identified = true;
         }
 
@@ -53,7 +55,7 @@ class Environment
 
     public function getTenant(bool $refresh = false): ?Tenant
     {
-        if (! $this->identified || $refresh) {
+        if (!$this->identified || $refresh) {
             $resolver = $this->tenantResolver();
 
             $this->setTenant($resolver());

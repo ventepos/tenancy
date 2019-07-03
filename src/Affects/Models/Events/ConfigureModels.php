@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28,7 +30,8 @@ class ConfigureModels
     public $event;
 
     /**
-     * Tenant connection resolver
+     * Tenant connection resolver.
+     *
      * @var ConnectionResolverInterface
      */
     public static $resolver;
@@ -42,7 +45,8 @@ class ConfigureModels
      * Forces specific models to use the tenant connection.
      *
      * @param array $models
-     * @param bool  $reset ; reset the connection back to the default if no tenant identified.
+     * @param bool  $reset  ; reset the connection back to the default if no tenant identified.
+     *
      * @return $this
      */
     public function onTenant(array $models, bool $reset = true)
@@ -64,7 +68,7 @@ class ConfigureModels
     {
         $db = resolve('db');
 
-        if ($reset && ! $this->event->tenant) {
+        if ($reset && !$this->event->tenant) {
             return $db;
         }
 
