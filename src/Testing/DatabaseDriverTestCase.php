@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the tenancy/tenancy package.
  *
- * (c) Daniël Klabbers <daniel@klabbers.email>
+ * Copyright Laravel Tenancy & Daniël Klabbers <daniel@klabbers.email>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,18 +16,17 @@
 
 namespace Tenancy\Testing;
 
+use Illuminate\Database\Connection;
+use Illuminate\Database\DatabaseManager;
+use InvalidArgumentException;
 use PDO;
 use PDOException;
 use Tenancy\Facades\Tenancy;
-use InvalidArgumentException;
-use Tenancy\Testing\TestCase;
-use Tenancy\Testing\Mocks\Tenant;
+use Tenancy\Identification\Contracts\ResolvesTenants;
 use Tenancy\Tenant\Events\Created;
 use Tenancy\Tenant\Events\Deleted;
 use Tenancy\Tenant\Events\Updated;
-use Illuminate\Database\Connection;
-use Illuminate\Database\DatabaseManager;
-use Tenancy\Identification\Contracts\ResolvesTenants;
+use Tenancy\Testing\Mocks\Tenant;
 
 abstract class DatabaseDriverTestCase extends TestCase
 {
