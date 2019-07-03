@@ -16,11 +16,11 @@ declare(strict_types=1);
 
 namespace Tenancy\Tests\Database\Sqlite;
 
-use Tenancy\Database\Drivers\Sqlite\Providers\ServiceProvider;
 use Tenancy\Testing\DatabaseDriverTestCase;
+use Tenancy\Database\Drivers\Sqlite\Provider;
 
 class SqliteDriverTest extends DatabaseDriverTestCase
 {
-    protected $additionalProviders = [ServiceProvider::class];
+    protected $additionalProviders = [Provider::class];
     public $pdo = false;
 }
